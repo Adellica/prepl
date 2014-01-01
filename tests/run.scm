@@ -49,7 +49,7 @@
   (test "returns with two clients down" (void) (REPL))
   (test "counter 6" 6 (counter))
 
-  (test "conncetions: none after closing" 0 (length (REPL #:connections))))
+  (test "connections: none after closing" 0 (length (REPL #:connections))))
 
 (test "counter 7" 7 (counter))
 (test-exit)

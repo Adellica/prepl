@@ -1,0 +1,4 @@
+;; -*- scheme -*-
+
+((author "Kristian Lein-Mathisen")
+ (license "BSD"))

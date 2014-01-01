@@ -84,9 +84,8 @@
               (let* ((con (list #f remote-adr remote-port in out))
                      (close! (lambda ()
                                (set! connections
-                                     (remove (lambda (con%)
-                                               ;;(print con con% " equal? "  (equal? con con%))
-                                               (equal? con con%)) connections)))))
+                                     (remove (lambda (con%) (equal? con con%))
+                                             connections)))))
                 (set! (car con)
                       (lambda (k) ;; cps
                         (let ((kl (list k)))
@@ -96,12 +95,14 @@
                           ;; should never be called).
                           (close!)
                           ((car kl) #f))))
+
                 (set! connections (cons con connections)))))))
+
       ;; process all active connections:
       (for-each
        (lambda (con)
          (let ((proc (car con)))
-           (call/cc
+           (call/cc ;; possible to use use only one call/cc here?
             (lambda (return)
               (proc (lambda (k) ;; cps
                       (set! (car con) k)

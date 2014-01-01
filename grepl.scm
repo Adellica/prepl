@@ -18,7 +18,7 @@
                      (lambda () (char-ready? port))
                      (lambda () (close-input-port port)))))
 
-(define (repl-loop in-port out-port close!)
+(define (repl-loop in-port out-port)
 
   (define (repl-prompt op)
     (display "@> " op)
@@ -37,7 +37,7 @@
 
   (let loop ()
     (handle-exceptions root-exn
-      (close!) ;; <-- close/remove repl connection on error (broken pipe)
+      #f ;; <-- returns from repl-prompt
 
       (repl-prompt out-port)
       (handle-exceptions exn
@@ -48,7 +48,7 @@
         (let ([sexp (read in-port)])
           ;; eof, exit repl loop
           (if (eof-object? sexp)
-              (close!) ;; I don't think this ever happens, actually
+              sexp ;; return, but I don't think this ever happens, actually.
               (with-output-to-port out-port
                 (lambda ()
                   (with-error-output-to-port
@@ -90,7 +90,11 @@
                 (set! (car con)
                       (lambda (k) ;; cps
                         (let ((kl (list k)))
-                          (repl-loop (make-yielding-input-port in kl) out close!)
+                          (repl-loop (make-yielding-input-port in kl) out)
+                          ;; remove ourselves from connections, and
+                          ;; call continuation (its continuation, #f,
+                          ;; should never be called).
+                          (close!)
                           ((car kl) #f))))
                 (set! connections (cons con connections)))))))
       ;; process all active connections:

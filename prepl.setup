@@ -1,0 +1,7 @@
+;; -*- scheme -*-
+
+(compile -s prepl-module.scm -o prepl.so -J)
+(compile -s prepl.import.scm)
+
+(install-extension 'prepl
+                   '("prepl.so" "prepl.import.so"))

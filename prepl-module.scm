@@ -1,5 +1,5 @@
-(module grepl (make-grepl)
+(module prepl (make-prepl)
 (import scheme chicken srfi-1 ports)
 (use srfi-1)
-(include "grepl.scm")
+(include "prepl.scm")
 )

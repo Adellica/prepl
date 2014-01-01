@@ -60,7 +60,7 @@
                            (write-results result out-port)))))))))
         (loop)))))
 
-(define (make-grepl port)
+(define (make-prepl port)
   (define socket (tcp-listen port))
   (define connections '())
 

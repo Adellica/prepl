@@ -1,7 +1,7 @@
-(use test grepl srfi-18)
+(use test prepl srfi-18)
 
 (define port 9797)
-(define REPL (make-grepl port))
+(define REPL (make-prepl port))
 
 (test "returns without clients" (void) (REPL))
 (test "connections: none before connecting" 0 (length (REPL #:connections)))
